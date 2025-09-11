@@ -28,10 +28,11 @@ Crie um arquivo `.env` na raiz do projeto Backend:
 PORT=3000
 NODE_ENV=development
 
-# Configurações do MongoDB
-MONGODB_URI=mongodb://localhost:27017/plataforma_educativa
-# Para MongoDB Atlas:
-# MONGODB_URI=mongodb+srv://usuario:senha@cluster.mongodb.net/plataforma_educativa
+# Configurações do MongoDB Atlas (Recomendado)
+MONGODB_URI=mongodb+srv://Samuel-Souza:projeto123@cluster0.dx4kdgl.mongodb.net/plataforma_educativa?retryWrites=true&w=majority&appName=Cluster0
+
+# Para MongoDB Local (alternativo):
+# MONGODB_URI=mongodb://localhost:27017/plataforma_educativa
 
 # Configurações de Autenticação
 JWT_SECRET=sua_chave_secreta_muito_segura_aqui_123456789
@@ -45,9 +46,21 @@ RATE_LIMIT_WINDOW_MS=900000
 RATE_LIMIT_MAX_REQUESTS=100
 ```
 
-### 3. Iniciar MongoDB
+### 3. Configuração do Banco de Dados
 
-**Opção 1: MongoDB Local**
+**✅ MongoDB Atlas (Já Configurado)**
+O projeto já está configurado para usar o MongoDB Atlas com as seguintes credenciais:
+- **Cluster**: `cluster0.dx4kdgl.mongodb.net`
+- **Usuário**: `Samuel-Souza`
+- **Database**: `plataforma_educativa`
+
+A string de conexão já está incluída no exemplo do `.env`. Apenas certifique-se de que:
+1. ✅ A string `MONGODB_URI` está no seu arquivo `.env`
+2. ✅ O cluster Atlas está ativo e acessível
+3. ✅ As credenciais estão corretas
+
+**Opção Alternativa: MongoDB Local**
+Se preferir usar MongoDB local:
 ```bash
 # Instalar MongoDB Community Edition
 # Windows: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
@@ -56,16 +69,28 @@ RATE_LIMIT_MAX_REQUESTS=100
 
 # Iniciar MongoDB
 mongod
+
+# No .env, altere para:
+# MONGODB_URI=mongodb://localhost:27017/plataforma_educativa
 ```
 
-**Opção 2: MongoDB Atlas (Recomendado)**
-1. Criar conta em [MongoDB Atlas](https://cloud.mongodb.com/)
-2. Criar cluster gratuito
-3. Configurar usuário e senha
-4. Obter string de conexão
-5. Atualizar `MONGODB_URI` no `.env`
+### 4. Testar Conexão com o Banco
 
-### 4. Executar o Servidor
+Antes de iniciar o servidor, teste se a conexão com o MongoDB Atlas está funcionando:
+
+```bash
+npm run db:test
+```
+
+Se a conexão estiver funcionando, você verá:
+```
+✅ Conexão estabelecida com sucesso!
+✅ Ping bem-sucedido!
+📚 Coleções encontradas: (ou banco vazio)
+🎉 Teste de conexão concluído com sucesso!
+```
+
+### 5. Executar o Servidor
 
 **Desenvolvimento:**
 ```bash
@@ -76,6 +101,27 @@ npm run dev
 ```bash
 npm run build
 npm start
+```
+
+**Scripts Úteis:**
+```bash
+# Testar conexão com o banco
+npm run db:test
+
+# Criar coleções iniciais
+npm run db:create
+
+# Popular com dados de exemplo
+npm run db:seed
+
+# Setup completo do banco (criar + popular)
+npm run db:setup
+
+# Verificar tipos TypeScript
+npm run lint
+
+# Build limpo
+npm run build:clean
 ```
 
 ## 📡 API Endpoints
